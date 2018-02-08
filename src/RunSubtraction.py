@@ -1,6 +1,6 @@
 from graph import Graph
 
-frequencyGraph = Graph()
-frequencyGraph.loadCsvData('example.csv')
-frequencyGraph.printData()
-frequencyGraph.showGraph()
+graph = Graph()
+graph.load_csv_data('example.csv')
+#graph.print_data()
+graph.show_graph()
