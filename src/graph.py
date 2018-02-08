@@ -13,12 +13,15 @@ class Graph:
 
 	def load_csv_data(self, filename):
 		data_frame = pd.read_csv(os.path.join('..', 'input', filename), sep=',', header=0)
-		self.x_data = data_frame['Frequency']
+		self.x_data = data_frame['Wavelength']
 		self.y_data = data_frame['Intensity']
 		self.calc_exp_model()
 
 	def exp_func(self, x, a, b, c, d):
 		return a * (b ** (x - c)) + d
+
+	def sum_exp_func(self, x, a, b, c, d, e, f):
+		return (a * (b ** (x - c))) + (d * (e ** (x - f)))
 
 	def get_data_in_fit_range(self, data):
 		return data[500:730]
@@ -31,11 +34,11 @@ class Graph:
 
 	def calc_exp_model(self):
 		self.popt, pcov = curve_fit(
-			self.exp_func,
+			self.sum_exp_func,
 			self.get_x_data_for_fit(),
 			self.get_y_data_for_fit(),
-			p0=[1000, 0.99, 560, 0.1],
-			bounds=(0, [10000, 10000, 10000, 500]))
+			p0=[1000, 0.99, 500, 1000, 0.99, 500]
+			)
 		print('popt: ' + str(self.popt))
 
 	def print_data(self):
@@ -43,8 +46,8 @@ class Graph:
 
 	def show_graph(self):
 		plt.title('Frequency Distribution')
-		plt.xlabel('Frequency (Hz)')
-		plt.xlim(xmin=500, xmax=800)
+		plt.xlabel('Wavelength (nm)')
+		plt.xlim(xmin=500, xmax=1000)
 		plt.ylabel('Intensity')
 		plt.ylim(ymin=0, ymax=10000)
 
@@ -52,7 +55,7 @@ class Graph:
 
 		if self.popt is not None:
 			x_data_fit = self.x_data[450:]
-			y_data_fit = self.exp_func(self.x_data[450:], *self.popt)
+			y_data_fit = self.sum_exp_func(self.x_data[450:], *self.popt)
 			plt.plot(x_data_fit, y_data_fit, '--')
 
 		plt.show()
