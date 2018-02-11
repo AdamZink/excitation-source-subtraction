@@ -3,18 +3,23 @@ import pandas as pd
 import os
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
+from find_extrema import FindExtrema
 
 class Graph:
 
 	def __init__(self):
 		self.x_data = None
 		self.y_data = None
+		self.fit_index_start = None
+		self.fit_index_end = None
 		self.popt = None
 
 	def load_csv_data(self, filename):
 		data_frame = pd.read_csv(os.path.join('..', 'input', filename), sep=',', header=0)
 		self.x_data = data_frame['Wavelength']
 		self.y_data = data_frame['Intensity']
+		self.set_fit_index_start()
+		self.set_fit_index_end()
 		self.calc_exp_model()
 
 	def exp_func(self, x, a, b, c, d):
@@ -23,8 +28,22 @@ class Graph:
 	def sum_exp_func(self, x, a, b, c, d, e, f):
 		return (a * (b ** (x - c))) + (d * (e ** (x - f)))
 
+	def set_fit_index_start(self):
+		points = 100
+		self.fit_index_start = int(points * 0.9) + FindExtrema.get_index_of_first_drop(
+			self.y_data,
+			number_of_points=points,
+			percent_drop=0.8
+		)
+		print('Fit Index Start set to: ' + str(self.fit_index_start))
+
+	def set_fit_index_end(self):
+		# TODO implementation of minima after fit_index_start
+		self.fit_index_end = 730
+		print('Fit Index End set to: ' + str(self.fit_index_end))
+
 	def get_data_in_fit_range(self, data):
-		return data[500:730]
+		return data[self.fit_index_start:self.fit_index_end]
 
 	def get_x_data_for_fit(self):
 		return self.get_data_in_fit_range(self.x_data)
