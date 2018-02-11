@@ -29,11 +29,11 @@ class Graph:
 		return (a * (b ** (x - c))) + (d * (e ** (x - f)))
 
 	def set_fit_index_start(self):
-		points = 100
-		self.fit_index_start = int(points * 0.9) + FindExtrema.get_index_of_first_drop(
+		points = 50
+		self.fit_index_start = int(points * 0.75) + FindExtrema.get_index_of_first_drop(
 			self.y_data,
 			number_of_points=points,
-			percent_drop=0.8
+			percent_drop=0.75
 		)
 		print('Fit Index Start set to: ' + str(self.fit_index_start))
 
@@ -43,7 +43,11 @@ class Graph:
 		print('Fit Index End set to: ' + str(self.fit_index_end))
 
 	def get_data_in_fit_range(self, data):
-		return data[self.fit_index_start:self.fit_index_end]
+		return pd.concat([
+			data[self.fit_index_start:self.fit_index_end],
+			data[1500:2000]],
+			ignore_index=True
+		)
 
 	def get_x_data_for_fit(self):
 		return self.get_data_in_fit_range(self.x_data)
