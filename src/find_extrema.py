@@ -20,4 +20,4 @@ class FindExtrema(object):
 		for index in test_indices:
 			if ((vector[index] - vector[index + number_of_points]) * 1.0) / vector[index] >= percent_drop:
 				return index
-		return None;
+		return None

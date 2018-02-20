@@ -1,6 +1,5 @@
 from graph import Graph
 
 graph = Graph()
-graph.load_csv_data('example.csv')
-#graph.print_data()
-graph.show_graph()
+graph.load_excel_sheet('Solvent_variation_condensed_data.xlsx', 'Initial')
+#graph.show_graph()

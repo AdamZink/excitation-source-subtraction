@@ -13,11 +13,25 @@ class Graph:
 		self.fit_index_start = None
 		self.fit_index_end = None
 		self.popt = None
+		self.sheet = None
+		self.measurements = {}
 
 	def load_csv_data(self, filename):
 		data_frame = pd.read_csv(os.path.join('..', 'input', filename), sep=',', header=0)
 		self.x_data = data_frame['Wavelength']
 		self.y_data = data_frame['Intensity']
+		self.set_fit_index_start()
+		self.set_fit_index_end()
+		self.calc_exp_model()
+
+	def load_excel_sheet(self, filename, sheet_name):
+		self.sheet = pd.read_excel(os.path.join('..', 'input', filename), sheet_name=sheet_name, header=0)
+		for col_name in list(self.sheet):
+			self.measurements[col_name] = self.sheet[col_name]
+		# This is how to get a specific measurement, i.e. column of data:
+		# print(self.measurements['75_25_2_N2'])
+		self.x_data = self.sheet['Wavelength']
+		self.y_data = self.sheet['90_10_1_Air']
 		self.set_fit_index_start()
 		self.set_fit_index_end()
 		self.calc_exp_model()
@@ -33,7 +47,7 @@ class Graph:
 		self.fit_index_start = int(points * 0.75) + FindExtrema.get_index_of_first_drop(
 			self.y_data,
 			number_of_points=points,
-			percent_drop=0.75
+			percent_drop=0.25
 		)
 		print('Fit Index Start set to: ' + str(self.fit_index_start))
 
