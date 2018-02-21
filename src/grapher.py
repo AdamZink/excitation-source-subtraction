@@ -4,37 +4,23 @@ import os
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 from find_extrema import FindExtrema
+from sheet import Sheet
 
-class Graph:
+class Grapher:
 
 	def __init__(self):
 		self.x_data = None
 		self.y_data = None
+		self.x_col_name = None
+		self.y_col_name = None
 		self.fit_index_start = None
 		self.fit_index_end = None
 		self.popt = None
 		self.sheet = None
-		self.measurements = {}
 
-	def load_csv_data(self, filename):
-		data_frame = pd.read_csv(os.path.join('..', 'input', filename), sep=',', header=0)
-		self.x_data = data_frame['Wavelength']
-		self.y_data = data_frame['Intensity']
-		self.set_fit_index_start()
-		self.set_fit_index_end()
-		self.calc_exp_model()
-
-	def load_excel_sheet(self, filename, sheet_name):
-		self.sheet = pd.read_excel(os.path.join('..', 'input', filename), sheet_name=sheet_name, header=0)
-		for col_name in list(self.sheet):
-			self.measurements[col_name] = self.sheet[col_name]
-		# This is how to get a specific measurement, i.e. column of data:
-		# print(self.measurements['75_25_2_N2'])
-		self.x_data = self.sheet['Wavelength']
-		self.y_data = self.sheet['90_10_1_Air']
-		self.set_fit_index_start()
-		self.set_fit_index_end()
-		self.calc_exp_model()
+	def load_sheet_from_excel(self, filename, sheet_name):
+		self.sheet = Sheet()
+		self.sheet.load_excel_sheet(filename, sheet_name)
 
 	def exp_func(self, x, a, b, c, d):
 		return a * (b ** (x - c)) + d
@@ -69,7 +55,16 @@ class Graph:
 	def get_y_data_for_fit(self):
 		return self.get_data_in_fit_range(self.y_data)
 
-	def calc_exp_model(self):
+	def setup_for_fit(self):
+		self.x_data = self.sheet.get_measurements(self.x_col_name)
+		self.y_data = self.sheet.get_measurements(self.y_col_name)
+		self.set_fit_index_start()
+		self.set_fit_index_end()
+
+	def calc_exp_model(self, x_col_name, y_col_name):
+		self.x_col_name = x_col_name
+		self.y_col_name = y_col_name
+		self.setup_for_fit()
 		self.popt, pcov = curve_fit(
 			self.sum_exp_func,
 			self.get_x_data_for_fit(),
@@ -83,9 +78,9 @@ class Graph:
 
 	def show_graph(self):
 		plt.title('Frequency Distribution')
-		plt.xlabel('Wavelength (nm)')
+		plt.xlabel(self.x_col_name)
 		plt.xlim(xmin=500, xmax=1000)
-		plt.ylabel('Intensity')
+		plt.ylabel('Intensity of ' + self.y_col_name)
 		plt.ylim(ymin=0, ymax=10000)
 
 		plt.plot(self.x_data, self.y_data)
