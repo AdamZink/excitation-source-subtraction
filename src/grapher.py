@@ -22,11 +22,11 @@ class Grapher:
 		self.sheet = Sheet()
 		self.sheet.load_excel_sheet(filename, sheet_name)
 
-	def exp_func(self, x, a, b, c, d):
-		return a * (b ** (x - c)) + d
-
 	def sum_exp_func(self, x, a, b, c, d, e, f):
 		return (a * (b ** (x - c))) + (d * (e ** (x - f)))
+
+	def original_func(self, x_index):
+		return self.y_data[x_index]
 
 	def set_fit_index_start(self):
 		points = 50
@@ -81,13 +81,23 @@ class Grapher:
 		plt.xlabel(self.x_col_name)
 		plt.xlim(xmin=500, xmax=1000)
 		plt.ylabel('Intensity of ' + self.y_col_name)
-		plt.ylim(ymin=0, ymax=10000)
+		plt.ylim(ymin=0, ymax=65000)
 
 		plt.plot(self.x_data, self.y_data)
 
 		if self.popt is not None:
-			x_data_fit = self.x_data[450:]
-			y_data_fit = self.sum_exp_func(self.x_data[450:], *self.popt)
+			x_data_fit = self.x_data[525:]
+			y_data_fit = self.sum_exp_func(self.x_data[525:], *self.popt)
 			plt.plot(x_data_fit, y_data_fit, '--')
+
+			y_data_subtract = np.subtract(
+				self.original_func(np.arange(2048)[525:]),
+				self.sum_exp_func(x_data_fit, *self.popt)
+			)
+			plt.plot(x_data_fit, y_data_subtract, '-')
+
+			# evaluate at 673.93 nm, i.e. sample 929 = index 928 (approximate peak wavelength)
+			print(y_data_subtract)
+			print(str(self.original_func(928)) + ' -> ' + str(y_data_subtract[928]))
 
 		plt.show()
