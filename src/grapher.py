@@ -17,6 +17,7 @@ class Grapher:
 		self.fit_index_end = None
 		self.popt = None
 		self.sheet = None
+		self.subtracted_peak_intensity = None
 
 	def load_sheet_from_excel(self, filename, sheet_name):
 		self.sheet = Sheet()
@@ -76,12 +77,15 @@ class Grapher:
 	def print_data(self):
 		print('X data: ' + str(self.x_data) + '\nY data:\n' + str(self.y_data))
 
-	def show_graph(self):
+	def save_graph(self, graph_name):
 		plt.title('Frequency Distribution')
 		plt.xlabel(self.x_col_name)
 		plt.xlim(xmin=500, xmax=1000)
 		plt.ylabel('Intensity of ' + self.y_col_name)
 		plt.ylim(ymin=0, ymax=65000)
+
+		# draw gray vertical line where the peak is expected
+		plt.axvline(x=self.x_data[928], color='#aaaaaa', linewidth=1)
 
 		plt.plot(self.x_data, self.y_data)
 
@@ -97,7 +101,15 @@ class Grapher:
 			plt.plot(x_data_fit, y_data_subtract, '-')
 
 			# evaluate at 673.93 nm, i.e. sample 929 = index 928 (approximate peak wavelength)
-			print(y_data_subtract)
+			self.subtracted_peak_intensity = y_data_subtract[928]
+
 			print(str(self.original_func(928)) + ' -> ' + str(y_data_subtract[928]))
 
-		plt.show()
+		plt.savefig('../output/plots/' + str(graph_name) + '.png')
+
+		#plt.show()
+
+		plt.gcf().clear()
+
+	def get_subtracted_peak_intensity(self):
+		return self.subtracted_peak_intensity
