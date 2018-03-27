@@ -77,7 +77,7 @@ class Grapher:
 	def print_data(self):
 		print('X data: ' + str(self.x_data) + '\nY data:\n' + str(self.y_data))
 
-	def save_graph(self):
+	def save_graph(self, graph_name):
 		plt.title('Frequency Distribution')
 		plt.xlabel(self.x_col_name)
 		plt.xlim(xmin=500, xmax=1000)
@@ -101,12 +101,11 @@ class Grapher:
 			plt.plot(x_data_fit, y_data_subtract, '-')
 
 			# evaluate at 673.93 nm, i.e. sample 929 = index 928 (approximate peak wavelength)
-			#print(y_data_subtract)
 			self.subtracted_peak_intensity = y_data_subtract[928]
 
 			print(str(self.original_func(928)) + ' -> ' + str(y_data_subtract[928]))
 
-		plt.savefig('../output/plots/' + str(self.sheet.sheet_name.replace(' ', '_') + '_' + self.y_col_name) + '.png')
+		plt.savefig('../output/plots/' + str(graph_name) + '.png')
 
 		#plt.show()
 

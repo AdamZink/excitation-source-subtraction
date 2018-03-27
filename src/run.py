@@ -31,12 +31,12 @@ for sheet in sheets:
 				print('\n' + column_name)
 
 				grapher.calc_exp_model('Wavelength', column_name)
-				grapher.save_graph()
+				grapher.save_graph(gas + '_' + sheet + '_' + mixture + '_' + measurement)
 
 				resultMap[gas] = grapher.get_subtracted_peak_intensity()
 
 			excel_writer.save_row(sheet + ',' + mixture + ',' + measurement + ',' + ','.join([str(resultMap[gas]) for gas in gases]))
 
-excel_writer.export_to_excel('subtraction_results.csv')  # , 'test_sheet'
+excel_writer.export_to_excel('subtraction_results.csv')
 
 print('\nDone writing file')
