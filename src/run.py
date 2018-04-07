@@ -3,7 +3,7 @@ from writer import Writer
 from parameters import Parameters
 
 params = Parameters()
-params.use_second_parameters()
+params.use_third_parameters()
 
 excel_writer = Writer()
 excel_writer.save_row('Time,Mix,Measurement,' + ','.join(params.gases))
@@ -19,7 +19,8 @@ for sheet in params.sheets:
 			resultMap = {}
 			for gas in params.gases:
 
-				column_name = mixture + '_' + measurement + '_' + gas
+				#column_name = mixture + '_' + measurement + '_' + gas
+				column_name = params.column_name_function(mixture, measurement, gas)
 				print('\n' + column_name)
 
 				grapher.calc_exp_model('Wavelength', column_name)

@@ -27,8 +27,6 @@ class Grapher:
 	def set_params(self, params):
 		self.params = params
 
-
-
 	def original_func(self, x_index):
 		return self.y_data[x_index]
 
@@ -82,7 +80,7 @@ class Grapher:
 
 	def save_graph(self, graph_name):
 		plt.title('Frequency Distribution')
-		plt.xlabel(self.x_col_name)
+		plt.xlabel('Wavelength (nm)')
 		plt.xlim(xmin=500, xmax=1000)
 		plt.ylabel('Intensity of ' + self.y_col_name)
 		plt.ylim(ymin=0, ymax=65000)
