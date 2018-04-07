@@ -1,31 +1,22 @@
 from grapher import Grapher
 from writer import Writer
+from parameters import Parameters
 
-# ['Initial', '24 hours', '1 week', '2 weeks', '4 weeks', '1000 hr']
-sheets = ['Initial', '24 hours', '1 week', '2 weeks', '4 weeks', '1000 hr']
-
-# ['90_10', '75_25', '50_50']
-mixtures = ['90_10', '75_25', '50_50']
-
-# ['N2', 'Air', 'O2']
-gases = ['N2', 'Air', 'O2']
-
-# ['1', '2', '3']
-measurements = ['1', '2', '3']
-
+params = new Parameters()
+params.use_second_parameters()
 
 excel_writer = Writer()
 excel_writer.save_row('Time,Mix,Measurement,' + ','.join(gases))
 
-for sheet in sheets:
+for sheet in params.sheets:
 	print('\n======== ' + sheet + ' ========')
 	grapher = Grapher()
-	grapher.load_sheet_from_excel('Solvent_variation_condensed_data.xlsx', sheet)
+	grapher.load_sheet_from_excel(params.filename, sheet)
 
-	for mixture in mixtures:
-		for measurement in measurements:
+	for mixture in params.mixtures:
+		for measurement in params.measurements:
 			resultMap = {}
-			for gas in gases:
+			for gas in params.gases:
 
 				column_name = mixture + '_' + measurement + '_' + gas
 				print('\n' + column_name)
