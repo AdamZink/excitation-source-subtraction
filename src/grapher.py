@@ -27,8 +27,7 @@ class Grapher:
 	def set_params(self, params):
 		self.params = params
 
-	def sum_exp_func(self, x, a, b, c, d, e, f):
-		return (a * (b ** (x - c))) + (d * (e ** (x - f)))
+
 
 	def original_func(self, x_index):
 		return self.y_data[x_index]
@@ -71,10 +70,10 @@ class Grapher:
 		self.y_col_name = y_col_name
 		self.setup_for_fit()
 		self.popt, pcov = curve_fit(
-			self.sum_exp_func,
+			self.params.fit_function,
 			self.get_x_data_for_fit(),
 			self.get_y_data_for_fit(),
-			p0=[1000, 0.99, 500, 1000, 0.99, 500]
+			p0=self.params.fit_p0
 			)
 		print('popt: ' + str(self.popt))
 
@@ -95,12 +94,12 @@ class Grapher:
 
 		if self.popt is not None:
 			x_data_fit = self.x_data[525:]
-			y_data_fit = self.sum_exp_func(self.x_data[525:], *self.popt)
+			y_data_fit = self.params.fit_function(self.x_data[525:], *self.popt)
 			plt.plot(x_data_fit, y_data_fit, '--')
 
 			y_data_subtract = np.subtract(
 				self.original_func(np.arange(2048)[525:]),
-				self.sum_exp_func(x_data_fit, *self.popt)
+				self.params.fit_function(x_data_fit, *self.popt)
 			)
 			plt.plot(x_data_fit, y_data_subtract, '-')
 
