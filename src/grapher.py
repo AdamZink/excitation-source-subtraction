@@ -18,10 +18,14 @@ class Grapher:
 		self.popt = None
 		self.sheet = None
 		self.subtracted_peak_intensity = None
+		self.params = None
 
 	def load_sheet_from_excel(self, filename, sheet_name):
 		self.sheet = Sheet()
 		self.sheet.load_excel_sheet(filename, sheet_name)
+
+	def set_params(self, params):
+		self.params = params
 
 	def sum_exp_func(self, x, a, b, c, d, e, f):
 		return (a * (b ** (x - c))) + (d * (e ** (x - f)))
@@ -77,7 +81,7 @@ class Grapher:
 	def print_data(self):
 		print('X data: ' + str(self.x_data) + '\nY data:\n' + str(self.y_data))
 
-	def save_graph(self, graph_name, params):
+	def save_graph(self, graph_name):
 		plt.title('Frequency Distribution')
 		plt.xlabel(self.x_col_name)
 		plt.xlim(xmin=500, xmax=1000)
@@ -85,7 +89,7 @@ class Grapher:
 		plt.ylim(ymin=0, ymax=65000)
 
 		# draw gray vertical line where the peak is expected
-		plt.axvline(x=self.x_data[params.x_index_of_peak], color='#aaaaaa', linewidth=1)
+		plt.axvline(x=self.x_data[self.params.x_index_of_peak], color='#aaaaaa', linewidth=1)
 
 		plt.plot(self.x_data, self.y_data)
 
@@ -101,9 +105,9 @@ class Grapher:
 			plt.plot(x_data_fit, y_data_subtract, '-')
 
 			# evaluate at approximate peak
-			self.subtracted_peak_intensity = y_data_subtract[params.x_index_of_peak]
+			self.subtracted_peak_intensity = y_data_subtract[self.params.x_index_of_peak]
 
-			print(str(self.original_func(params.x_index_of_peak)) + ' -> ' + str(y_data_subtract[params.x_index_of_peak]))
+			print(str(self.original_func(self.params.x_index_of_peak)) + ' -> ' + str(y_data_subtract[self.params.x_index_of_peak]))
 
 		plt.savefig('../output/plots/' + str(graph_name) + '.png')
 

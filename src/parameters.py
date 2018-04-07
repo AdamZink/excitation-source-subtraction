@@ -1,6 +1,6 @@
 class Parameters:
 
-	def __init__():
+	def __init__(self):
 		self.filename = None
 		self.sheets = None
 		self.mixtures = None
