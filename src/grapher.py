@@ -18,13 +18,15 @@ class Grapher:
 		self.popt = None
 		self.sheet = None
 		self.subtracted_peak_intensity = None
+		self.subtracted_amount = None
+		self.params = None
 
 	def load_sheet_from_excel(self, filename, sheet_name):
 		self.sheet = Sheet()
 		self.sheet.load_excel_sheet(filename, sheet_name)
 
-	def sum_exp_func(self, x, a, b, c, d, e, f):
-		return (a * (b ** (x - c))) + (d * (e ** (x - f)))
+	def set_params(self, params):
+		self.params = params
 
 	def original_func(self, x_index):
 		return self.y_data[x_index]
@@ -67,10 +69,10 @@ class Grapher:
 		self.y_col_name = y_col_name
 		self.setup_for_fit()
 		self.popt, pcov = curve_fit(
-			self.sum_exp_func,
+			self.params.fit_function,
 			self.get_x_data_for_fit(),
 			self.get_y_data_for_fit(),
-			p0=[1000, 0.99, 500, 1000, 0.99, 500]
+			p0=self.params.fit_p0
 			)
 		print('popt: ' + str(self.popt))
 
@@ -79,31 +81,32 @@ class Grapher:
 
 	def save_graph(self, graph_name):
 		plt.title('Frequency Distribution')
-		plt.xlabel(self.x_col_name)
+		plt.xlabel('Wavelength (nm)')
 		plt.xlim(xmin=500, xmax=1000)
 		plt.ylabel('Intensity of ' + self.y_col_name)
 		plt.ylim(ymin=0, ymax=65000)
 
 		# draw gray vertical line where the peak is expected
-		plt.axvline(x=self.x_data[928], color='#aaaaaa', linewidth=1)
+		plt.axvline(x=self.x_data[self.params.x_index_of_peak], color='#aaaaaa', linewidth=1)
 
 		plt.plot(self.x_data, self.y_data)
 
 		if self.popt is not None:
 			x_data_fit = self.x_data[525:]
-			y_data_fit = self.sum_exp_func(self.x_data[525:], *self.popt)
+			y_data_fit = self.params.fit_function(self.x_data[525:], *self.popt)
 			plt.plot(x_data_fit, y_data_fit, '--')
 
 			y_data_subtract = np.subtract(
 				self.original_func(np.arange(2048)[525:]),
-				self.sum_exp_func(x_data_fit, *self.popt)
+				self.params.fit_function(x_data_fit, *self.popt)
 			)
 			plt.plot(x_data_fit, y_data_subtract, '-')
 
-			# evaluate at 673.93 nm, i.e. sample 929 = index 928 (approximate peak wavelength)
-			self.subtracted_peak_intensity = y_data_subtract[928]
+			# evaluate at approximate peak
+			self.subtracted_peak_intensity = y_data_subtract[self.params.x_index_of_peak]
+			self.subtracted_amount = self.original_func(self.params.x_index_of_peak) - self.subtracted_peak_intensity
 
-			print(str(self.original_func(928)) + ' -> ' + str(y_data_subtract[928]))
+			print(str(self.original_func(self.params.x_index_of_peak)) + ' -> ' + str(self.subtracted_peak_intensity))
 
 		plt.savefig('../output/plots/' + str(graph_name) + '.png')
 
