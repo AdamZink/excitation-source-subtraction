@@ -3,10 +3,12 @@ from writer import Writer
 from parameters import Parameters
 
 params = Parameters()
-params.use_third_parameters()
+params.use_fifth_parameters()
 
 excel_writer = Writer()
-excel_writer.save_row('Time,Mix,Measurement,' + ','.join(params.gases))
+excel_writer.save_row('Time,Mix,Measurement,'
+	+ ','.join(params.gases) + ','
+	+ ','.join([g + '_diff' for g in params.gases]))
 
 for sheet in params.sheets:
 	print('\n======== ' + sheet + ' ========')
@@ -19,7 +21,6 @@ for sheet in params.sheets:
 			resultMap = {}
 			for gas in params.gases:
 
-				#column_name = mixture + '_' + measurement + '_' + gas
 				column_name = params.column_name_function(mixture, measurement, gas)
 				print('\n' + column_name)
 
@@ -27,10 +28,13 @@ for sheet in params.sheets:
 				graph_name = gas + '_' + sheet + '_' + mixture + '_' + measurement
 				grapher.save_graph(graph_name)
 
-				resultMap[gas] = grapher.get_subtracted_peak_intensity()
+				resultMap[gas] = (grapher.get_subtracted_peak_intensity(), grapher.subtracted_amount)
 
-			excel_writer.save_row(sheet + ',' + mixture + ',' + measurement + ',' + ','.join([str(resultMap[gas]) for gas in params.gases]))
+			excel_writer.save_row(sheet + ',' + mixture + ',' + measurement + ','
+				+ ','.join([str(resultMap[gas][0]) for gas in params.gases]) + ','
+				+ ','.join([str(resultMap[gas][1]) for gas in params.gases]))
 
-excel_writer.export_to_excel('subtraction_results.csv')
+out_filename = 'subtraction_results-' + str(params.filename.replace('.xlsx', '')) + '.csv'
+excel_writer.export_to_excel(out_filename)
 
-print('\nDone writing file')
+print('\nDone writing results to ' + out_filename)

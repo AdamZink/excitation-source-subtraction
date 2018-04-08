@@ -18,6 +18,7 @@ class Grapher:
 		self.popt = None
 		self.sheet = None
 		self.subtracted_peak_intensity = None
+		self.subtracted_amount = None
 		self.params = None
 
 	def load_sheet_from_excel(self, filename, sheet_name):
@@ -103,8 +104,9 @@ class Grapher:
 
 			# evaluate at approximate peak
 			self.subtracted_peak_intensity = y_data_subtract[self.params.x_index_of_peak]
+			self.subtracted_amount = self.original_func(self.params.x_index_of_peak) - self.subtracted_peak_intensity
 
-			print(str(self.original_func(self.params.x_index_of_peak)) + ' -> ' + str(y_data_subtract[self.params.x_index_of_peak]))
+			print(str(self.original_func(self.params.x_index_of_peak)) + ' -> ' + str(self.subtracted_peak_intensity))
 
 		plt.savefig('../output/plots/' + str(graph_name) + '.png')
 
