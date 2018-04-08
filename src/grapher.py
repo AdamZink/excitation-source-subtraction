@@ -20,6 +20,7 @@ class Grapher:
 		self.subtracted_peak_intensity = None
 		self.subtracted_amount = None
 		self.params = None
+		self.y_data_subtract = None
 
 	def load_sheet_from_excel(self, filename, sheet_name):
 		self.sheet = Sheet()
@@ -42,7 +43,7 @@ class Grapher:
 
 	def set_fit_index_end(self):
 		# TODO implementation of minima after fit_index_start
-		self.fit_index_end = 730
+		self.fit_index_end = self.params.fit_index_end
 		print('Fit Index End set to: ' + str(self.fit_index_end))
 
 	def get_data_in_fit_range(self, data):
@@ -96,14 +97,14 @@ class Grapher:
 			y_data_fit = self.params.fit_function(self.x_data[525:], *self.popt)
 			plt.plot(x_data_fit, y_data_fit, '--')
 
-			y_data_subtract = np.subtract(
+			self.y_data_subtract = np.subtract(
 				self.original_func(np.arange(2048)[525:]),
 				self.params.fit_function(x_data_fit, *self.popt)
 			)
-			plt.plot(x_data_fit, y_data_subtract, '-')
+			plt.plot(x_data_fit, self.y_data_subtract, '-')
 
 			# evaluate at approximate peak
-			self.subtracted_peak_intensity = y_data_subtract[self.params.x_index_of_peak]
+			self.subtracted_peak_intensity = self.y_data_subtract[self.params.x_index_of_peak]
 			self.subtracted_amount = self.original_func(self.params.x_index_of_peak) - self.subtracted_peak_intensity
 
 			print(str(self.original_func(self.params.x_index_of_peak)) + ' -> ' + str(self.subtracted_peak_intensity))

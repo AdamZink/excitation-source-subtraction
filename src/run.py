@@ -1,11 +1,11 @@
 from grapher import Grapher
-from writer import Writer
+from writer import RowWriter
 from parameters import Parameters
 
 params = Parameters()
 params.use_fifth_parameters()
 
-excel_writer = Writer()
+excel_writer = RowWriter()
 excel_writer.save_row('Time,Mix,Measurement,'
 	+ ','.join(params.gases) + ','
 	+ ','.join([g + '_diff' for g in params.gases]))
