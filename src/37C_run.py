@@ -3,7 +3,7 @@ from writer import RowWriter, ColumnWriter
 from parameters import Parameters
 
 params = Parameters()
-params.use_37C_parameters()
+params.use_electrosprayed_parameters()
 
 excel_writer = RowWriter()
 excel_writer.save_row('Mix,Measurement,Result,Diff')

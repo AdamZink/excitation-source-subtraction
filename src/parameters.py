@@ -136,3 +136,22 @@ class Parameters:
 		self.fit_index_end = 810
 		# function for column name
 		#self.column_name_function = self.get_column_name_short
+
+	def use_electrosprayed_parameters(self):
+		self.filename = 'Electrosprayed_particle_sample_spectra.xlsx'
+		# ['Sheet1']
+		self.sheets = ['Sheet1']
+		# ['Nylon 6]
+		self.mixtures = ['Electrosprayed']
+		# ['N2', 'Air', 'O2']
+		#self.gases = ['N2', 'Air', 'O2']
+		# ['1', '2', '3']
+		#self.measurements = ['1', '2', '3']
+		# evaluate at 595.73 nm, i.e. sample 704 = index 703
+		self.x_index_of_peak = 703
+		# Curve fit function and initial parameters
+		self.fit_function = self.sum_exp_func
+		self.fit_p0 = [1000, 0.99, 500, 1000, 0.99, 500]
+		self.fit_index_end = 625
+		# function for column name
+		#self.column_name_function = self.get_column_name_short
