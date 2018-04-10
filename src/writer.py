@@ -4,7 +4,7 @@ import io
 import csv
 
 
-class Writer:
+class RowWriter:
 
 	def __init__(self):
 		# self.csv_data = io.StringIO()
@@ -34,3 +34,18 @@ class Writer:
 		# pdWriter = pd.ExcelWriter(self.excel_out_path, engine='xlsxwriter')
 		# self.dataframe.to_excel(pdWriter, sheet_name=self.sheet_name)
 		# pdWriter.save()
+
+
+class ColumnWriter:
+
+	def __init__(self):
+		self.excel_out_path = None
+		self.dataframe = pd.DataFrame()
+
+	def save_column(self, column_name, data):
+		self.dataframe[column_name] = data
+
+	def export_to_excel(self, filename, sheet_name):
+		excel_writer = pd.ExcelWriter(os.path.join('..', 'output', filename))
+		self.dataframe.to_excel(excel_writer, sheet_name)
+		excel_writer.save()
