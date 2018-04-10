@@ -38,6 +38,7 @@ class Parameters:
 		# Curve fit function and initial parameters
 		self.fit_function = self.sum_exp_func
 		self.fit_p0 = [1000, 0.99, 500, 1000, 0.99, 500]
+		self.fit_index_end = 730
 		# function for column name
 		self.column_name_function = self.get_column_name
 
@@ -56,6 +57,7 @@ class Parameters:
 		# Curve fit function and initial parameters
 		self.fit_function = self.sum_exp_func
 		self.fit_p0 = [1000, 0.99, 500, 1000, 0.99, 500]
+		self.fit_index_end = 730
 		# function for column name
 		self.column_name_function = self.get_column_name
 
@@ -74,6 +76,7 @@ class Parameters:
 		# Curve fit function and initial parameters
 		self.fit_function = self.sum_exp_func
 		self.fit_p0 = [1000, 0.99, 500, 1000, 0.99, 500]
+		self.fit_index_end = 730
 		# function for column name
 		self.column_name_function = self.get_column_name_short
 
@@ -92,6 +95,7 @@ class Parameters:
 		# Curve fit function and initial parameters
 		self.fit_function = self.sum_exp_func
 		self.fit_p0 = [1000, 0.99, 500, 1000, 0.99, 500]
+		self.fit_index_end = 730
 		# function for column name
 		self.column_name_function = self.get_column_name
 
@@ -110,5 +114,44 @@ class Parameters:
 		# Curve fit function and initial parameters
 		self.fit_function = self.sum_exp_func
 		self.fit_p0 = [1000, 0.99, 500, 1000, 0.99, 500]
+		self.fit_index_end = 730
 		# function for column name
 		self.column_name_function = self.get_column_name_short
+
+	def use_37C_parameters(self):
+		self.filename = '365_days_37C.xlsx'
+		# ['Sheet1']
+		self.sheets = ['Sheet1']
+		# ['Nylon 6]
+		self.mixtures = ['37C']
+		# ['N2', 'Air', 'O2']
+		#self.gases = ['N2', 'Air', 'O2']
+		# ['1', '2', '3']
+		#self.measurements = ['1', '2', '3']
+		# evaluate at 673.93 nm, i.e. sample 929 = index 928
+		self.x_index_of_peak = 928
+		# Curve fit function and initial parameters
+		self.fit_function = self.sum_exp_func
+		self.fit_p0 = [400, 0.99, 600, 400, 0.99, 600]
+		self.fit_index_end = 810
+		# function for column name
+		#self.column_name_function = self.get_column_name_short
+
+	def use_electrosprayed_parameters(self):
+		self.filename = 'Electrosprayed_particle_sample_spectra.xlsx'
+		# ['Sheet1']
+		self.sheets = ['Sheet1']
+		# ['Nylon 6]
+		self.mixtures = ['Electrosprayed']
+		# ['N2', 'Air', 'O2']
+		#self.gases = ['N2', 'Air', 'O2']
+		# ['1', '2', '3']
+		#self.measurements = ['1', '2', '3']
+		# evaluate at 595.73 nm, i.e. sample 704 = index 703
+		self.x_index_of_peak = 703
+		# Curve fit function and initial parameters
+		self.fit_function = self.sum_exp_func
+		self.fit_p0 = [1000, 0.99, 500, 1000, 0.99, 500]
+		self.fit_index_end = 625
+		# function for column name
+		#self.column_name_function = self.get_column_name_short
