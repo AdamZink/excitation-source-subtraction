@@ -177,3 +177,41 @@ class Parameters:
 		self.fit_index_end = 730
 		# function for column name
 		self.column_name_function = self.get_column_name_alternative
+
+	def use_37c_pd_ra_parameters(self):
+		self.filename = '37C_Pd_RA_Incubator.xlsx'
+		# ['Initial', '24 hours', '1 week', '2 weeks', '4 weeks', '1000 hr']
+		self.sheets = ['Day 0', 'Day 1', 'Day 3', 'Day 7', 'Day 14', 'Day 28', '1000 hr']
+		# ['90_10', '75_25', '50_50']
+		self.mixtures = ['0pt1', '0pt5', '3wt', '10wt']
+		# ['N2', 'Air', 'O2']
+		self.gases = ['Air']
+		# ['1', '2', '3']
+		self.measurements = ['1', '2', '3']
+		# evaluate at 673.93 nm, i.e. sample 929 = index 928
+		self.x_index_of_peak = 928
+		# Curve fit function and initial parameters
+		self.fit_function = self.sum_exp_func
+		self.fit_p0 = [1000, 0.99, 500, 1000, 0.99, 500]
+		self.fit_index_end = 765
+		# function for column name
+		self.column_name_function = self.get_column_name_alternative
+
+	def use_50c_pd_ra_parameters(self):
+		self.filename = '50C_Pd_RA_Incubator.xlsx'
+		# ['Initial', '24 hours', '1 week', '2 weeks', '4 weeks', '1000 hr']
+		self.sheets = ['0 days', 'Day 1', 'Day 3', 'Day 7', 'Day 14', 'Day 28', '1000 hr']
+		# ['90_10', '75_25', '50_50']
+		self.mixtures = ['0pt1', '0pt5', '3wt', '10wt']
+		# ['N2', 'Air', 'O2']
+		self.gases = ['Air']
+		# ['1', '2', '3']
+		self.measurements = ['1', '2', '3']
+		# evaluate at 673.93 nm, i.e. sample 929 = index 928
+		self.x_index_of_peak = 928
+		# Curve fit function and initial parameters
+		self.fit_function = self.sum_exp_func
+		self.fit_p0 = [1000, 0.99, 500, 1000, 0.99, 500]
+		self.fit_index_end = 765
+		# function for column name
+		self.column_name_function = self.get_column_name_alternative

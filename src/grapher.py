@@ -34,10 +34,10 @@ class Grapher:
 
 	def set_fit_index_start(self):
 		points = 50
-		self.fit_index_start = int(points * 0.75) + FindExtrema.get_index_of_first_drop(
+		self.fit_index_start = 25 + int(points * 0.75) + FindExtrema.get_index_of_first_drop(
 			self.y_data,
 			number_of_points=points,
-			percent_drop=0.25
+			percent_drop=0.35
 		)
 		print('Fit Index Start set to: ' + str(self.fit_index_start))
 
@@ -49,7 +49,7 @@ class Grapher:
 	def get_data_in_fit_range(self, data):
 		return pd.concat([
 			data[self.fit_index_start:self.fit_index_end],
-			data[1400:2000]],
+			data[1300:2000]],
 			ignore_index=True
 		)
 
