@@ -20,6 +20,9 @@ class Parameters:
 	def get_column_name(self, mixture, measurement, gas):
 		return mixture + '_' + measurement + '_' + gas
 
+	def get_column_name_alternative(self, mixture, measurement, gas):
+		return mixture + '_' + gas + '_' + measurement
+
 	def get_column_name_short(self, mixture, measurement, gas):
 		return gas + '_' + measurement
 
@@ -155,3 +158,22 @@ class Parameters:
 		self.fit_index_end = 625
 		# function for column name
 		#self.column_name_function = self.get_column_name_short
+
+	def use_polymer_ra_parameters(self):
+		self.filename = 'Polymer RA data.xlsx'
+		# ['Initial', '24 hours', '1 week', '2 weeks', '4 weeks', '1000 hr']
+		self.sheets = ['Initial', '1 week', '2 weeks', '4 weeks']
+		# ['90_10', '75_25', '50_50']
+		self.mixtures = ['N', 'PET', 'PDMS', 'PES', 'PSU']
+		# ['N2', 'Air', 'O2']
+		self.gases = ['N2', 'Air', 'O2']
+		# ['1', '2', '3']
+		self.measurements = ['1', '2', '3']
+		# evaluate at 673.93 nm, i.e. sample 929 = index 928
+		self.x_index_of_peak = 928
+		# Curve fit function and initial parameters
+		self.fit_function = self.sum_exp_func
+		self.fit_p0 = [1000, 0.99, 500, 1000, 0.99, 500]
+		self.fit_index_end = 730
+		# function for column name
+		self.column_name_function = self.get_column_name_alternative

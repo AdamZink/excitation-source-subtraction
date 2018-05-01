@@ -49,7 +49,7 @@ class Grapher:
 	def get_data_in_fit_range(self, data):
 		return pd.concat([
 			data[self.fit_index_start:self.fit_index_end],
-			data[1000:2000]],
+			data[1400:2000]],
 			ignore_index=True
 		)
 
