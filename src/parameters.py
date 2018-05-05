@@ -215,3 +215,41 @@ class Parameters:
 		self.fit_index_end = 765
 		# function for column name
 		self.column_name_function = self.get_column_name_alternative
+
+	def use_polymer_ra_1000_hr_parameters(self):
+		self.filename = 'Polymer_RA_data_1000_hr.xlsx'
+		# ['Initial', '24 hours', '1 week', '2 weeks', '4 weeks', '1000 hr']
+		self.sheets = ['Initial', '1 week', '2 weeks', '4 weeks', '1000 hr']
+		# ['90_10', '75_25', '50_50']
+		self.mixtures = ['N', 'PET', 'PDMS', 'PES', 'PSU']
+		# ['N2', 'Air', 'O2']
+		self.gases = ['N2', 'Air', 'O2']
+		# ['1', '2', '3']
+		self.measurements = ['1', '2', '3']
+		# evaluate at 673.93 nm, i.e. sample 929 = index 928
+		self.x_index_of_peak = 928
+		# Curve fit function and initial parameters
+		self.fit_function = self.sum_exp_func
+		self.fit_p0 = [1000, 0.99, 500, 1000, 0.99, 500]
+		self.fit_index_end = 765  #730
+		# function for column name
+		self.column_name_function = self.get_column_name_alternative
+
+	def use_polymer_ra_nylon_parameters(self):
+		self.filename = 'Polymer RA Nylon Dried versus Non.xlsx'
+		# ['Initial', '24 hours', '1 week', '2 weeks', '4 weeks', '1000 hr']
+		self.sheets = ['Initial', 'Day 1']
+		# ['90_10', '75_25', '50_50']
+		self.mixtures = ['DryN', 'RegN']
+		# ['N2', 'Air', 'O2']
+		self.gases = ['N2', 'Air', 'O2']
+		# ['1', '2', '3']
+		self.measurements = ['1', '2', '3']
+		# evaluate at 673.93 nm, i.e. sample 929 = index 928
+		self.x_index_of_peak = 928
+		# Curve fit function and initial parameters
+		self.fit_function = self.sum_exp_func
+		self.fit_p0 = [1000, 0.99, 500, 1000, 0.99, 500]
+		self.fit_index_end = 765  #730
+		# function for column name
+		self.column_name_function = self.get_column_name_alternative
