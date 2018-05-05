@@ -3,7 +3,7 @@ from writer import RowWriter
 from parameters import Parameters
 
 params = Parameters()
-params.use_fifth_parameters()
+params.use_polymer_ra_nylon_parameters()
 
 excel_writer = RowWriter()
 excel_writer.save_row('Time,Mix,Measurement,'
@@ -24,11 +24,16 @@ for sheet in params.sheets:
 				column_name = params.column_name_function(mixture, measurement, gas)
 				print('\n' + column_name)
 
-				grapher.calc_exp_model('Wavelength', column_name)
-				graph_name = gas + '_' + sheet + '_' + mixture + '_' + measurement
-				grapher.save_graph(graph_name)
+				if column_name in grapher.sheet.measurements:
 
-				resultMap[gas] = (grapher.get_subtracted_peak_intensity(), grapher.subtracted_amount)
+					grapher.calc_exp_model('Wavelength', column_name)
+					graph_name = gas + '_' + sheet + '_' + mixture + '_' + measurement
+					grapher.save_graph(graph_name)
+
+					resultMap[gas] = (grapher.get_subtracted_peak_intensity(), grapher.subtracted_amount)
+
+				else:
+					resultMap[gas] = (0, 0)
 
 			excel_writer.save_row(sheet + ',' + mixture + ',' + measurement + ','
 				+ ','.join([str(resultMap[gas][0]) for gas in params.gases]) + ','
