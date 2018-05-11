@@ -3,7 +3,7 @@ from writer import RowWriter
 from parameters import Parameters
 
 params = Parameters()
-params.use_polymer_ra_nylon_parameters()
+params.use_beta_carotene_test_parameters()
 
 excel_writer = RowWriter()
 excel_writer.save_row('Time,Mix,Measurement,'

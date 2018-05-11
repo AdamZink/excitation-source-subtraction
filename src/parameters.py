@@ -253,3 +253,41 @@ class Parameters:
 		self.fit_index_end = 765  #730
 		# function for column name
 		self.column_name_function = self.get_column_name_alternative
+
+	def use_beta_carotene_test_parameters(self):
+		self.filename = 'RA May 2018 Beta Carotene test.xlsx'
+		# ['Initial', '24 hours', '1 week', '2 weeks', '4 weeks', '1000 hr']
+		self.sheets = ['Initial', 'Day 1']
+		# ['90_10', '75_25', '50_50']
+		self.mixtures = ['BC', 'noBC']
+		# ['N2', 'Air', 'O2']
+		self.gases = ['N2', 'Air', 'O2']
+		# ['1', '2', '3']
+		self.measurements = ['1', '2', '3']
+		# evaluate at 673.93 nm, i.e. sample 929 = index 928
+		self.x_index_of_peak = 928
+		# Curve fit function and initial parameters
+		self.fit_function = self.sum_exp_func
+		self.fit_p0 = [1000, 0.99, 500, 1000, 0.99, 500]
+		self.fit_index_end = 730  #730
+		# function for column name
+		self.column_name_function = self.get_column_name_alternative
+
+	def use_pd_led_color_parameters(self):
+		self.filename = 'PSUPdTFPPPCL different LED colors 2_2_17 flow tests condensed.xlsx'
+		# ['Initial', '24 hours', '1 week', '2 weeks', '4 weeks', '1000 hr']
+		self.sheets = ['Day 0', '1 week', '2 weeks', '1000 hr']
+		# ['90_10', '75_25', '50_50']
+		self.mixtures = ['Blue', 'Green', 'Red', 'UV']
+		# ['N2', 'Air', 'O2']
+		self.gases = ['N2', 'Air', 'O2']
+		# ['1', '2', '3']
+		self.measurements = ['1', '2', '3']
+		# evaluate at 673.93 nm, i.e. sample 929 = index 928
+		self.x_index_of_peak = 928
+		# Curve fit function and initial parameters
+		self.fit_function = self.sum_exp_func
+		self.fit_p0 = [1000, 0.99, 500, 1000, 0.99, 500]
+		self.fit_index_end = 730  #730
+		# function for column name
+		self.column_name_function = self.get_column_name_alternative
