@@ -10,6 +10,8 @@ class Parameters:
 		self.measurements = None
 		self.x_index_of_peak = None
 		self.fit_p0 = None
+		# Defaults
+		self.fit_index_start_offset = 0
 
 	def sum_exp_func(self, x, a, b, c, d, e, f):
 		return (a * (b ** (x - c))) + (d * (e ** (x - f)))
@@ -63,6 +65,8 @@ class Parameters:
 		self.fit_index_end = 730
 		# function for column name
 		self.column_name_function = self.get_column_name
+		# Override defaults
+		self.fit_index_start_offset = 25
 
 	def use_third_parameters(self):
 		self.filename = 'PCL_HFP_0pt5PdTFPP_Combined_2.xlsx'
